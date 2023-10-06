@@ -17,7 +17,9 @@
                             </span>
                     </li>
                 @endforeach
-
+                @if (count($links) == 0)
+                    <p>No approved links yet</p>
+                @endif
             </div>
             {{-- Right colum to show the form to upload a link --}}
             <div class="col-md-4">
