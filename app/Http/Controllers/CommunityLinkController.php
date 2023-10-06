@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Channel ;
 use App\Models\CommunityLink;
+use App\Models\User ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 ;
@@ -46,6 +47,10 @@ class CommunityLinkController extends Controller
             ]);
 
             $data['user_id'] = Auth::id();
+
+            $approved = Auth::user()->trusted ? true : false;
+
+            $data['approved'] = $approved;
 
             CommunityLink::create($data);
 
