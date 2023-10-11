@@ -6,6 +6,7 @@ use App\Models\CommunityLink;
 use App\Models\User ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
+use App\Http\Requests\CommunityLinkForm ;
 ;
 
 class CommunityLinkController extends Controller
@@ -15,7 +16,7 @@ class CommunityLinkController extends Controller
      */
     public function index()
     {
-        $links = CommunityLink::where('approved', 1)->paginate(25);
+        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
         $channels = Channel::orderBy('title','asc')->get();
         return view('community/index', compact('links', 'channels'));
     }
@@ -31,20 +32,11 @@ class CommunityLinkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommunityLinkForm $request)
     {
         //
-        $data = $request->validate([
 
-            'title' => 'required|max:255',
-
-
-
-            'link' => 'required|unique:community_links|url|max:255',
-
-            'channel_id' => 'required|exists:channels,id'
-
-            ]);
+        $data = $request->validated();
 
             $user = Auth::user();
 
@@ -56,15 +48,23 @@ class CommunityLinkController extends Controller
 
             $data['approved'] = $approved;
 
-            CommunityLink::create($data);
+            if(CommunityLink::hasAlreadyBeenSubmitted($data['link'])) {
+                if ($approved == 1) {
+                    return back()->with('success', 'el enlace se ha actualizado correctamente');
+                    } else if($approved == 0){
+                    return back()->with('info', 'el enlace ya esta publicado y no estas aprobado');
+                    }else {
+                        return back()->with('info', 'error al cambiar el link');
+                };
+            }else {
+                if ($approved == 1) {
+                    CommunityLink::create($data);
+                    return back()->with('success', 'el enlace se ha creado correctamente');
+                    } else {
+                    return back()->with('info', 'el enlace se ha pasado a revisar correctamente');
+                };
+            }
 
-            return back();
-
-            if ($isTrusted) {
-            return redirect()->back()->with('success', 'el enlace se ha creado correctamente');
-            } else {
-            return redirect()->back()->with('info', 'el enlace se validara mas tarde');
-        };
     }
 
     /**
