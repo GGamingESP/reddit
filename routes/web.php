@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('community', [App\Http\Controllers\CommunityLinkController::class, 'index']);
 Route::post('community', [App\Http\Controllers\CommunityLinkController::class, 'store'])->middleware('auth');
-
+Route::get('community/{channel:slug}', [App\Http\Controllers\CommunityLinkController::class, 'index']);
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/home', function () {

@@ -5,12 +5,12 @@
         <div class="row">
             {{-- Left colum to show all the links in the DB --}}
             <div class="col-md-8">
-                <h1>Community</h1>
+                <h1><a href="/community">Community</a> - {{ $channel ? $channel->title : '' }}</h1>
                 @foreach ($links as $link)
                     <li class="bg-body">
-                        <span class="label label-default" style="background: {{ $link->channel->color }}">
-                            {{ $link->channel->title }}
-                        </span>
+                        <a class="text-decoration-none label label-default p-1 border-rounded text-black rounded"
+                            href="/community/{{ $link->channel->slug }}"
+                            style="background-color:{{ $link->channel->color }}">{{ $link->channel->title }}</a>
                         <a href="{{ $link->link }}" target="_blank">
                             {{ $link->title }}
                         </a>
