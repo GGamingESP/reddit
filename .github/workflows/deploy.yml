@@ -19,4 +19,4 @@ jobs:
             cd /var/www/html/reddit
             git pull
             npm run build
-            sudo -n service php8.2-fpm reload
+            sudo service php8.2-fpm reload
