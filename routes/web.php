@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    dd(opcache_get_status());
     return view('welcome');
 });
 
@@ -28,7 +30,7 @@ Route::get('community/{channel:slug}', [App\Http\Controllers\CommunityLinkContro
 
 Route::get('/home', function () {
     return view('home');
- })->middleware(['auth', 'verified'])->name('home');
+})->middleware(['auth', 'verified'])->name('home');
 
 Route::get('/ruta/{parametro?}', function ($parametro = null) {
     return "Parámetro opcional: " . $parametro;
@@ -55,7 +57,7 @@ Route::match(['get', 'post'], '/getpost', function () {
 Route::get('/esnumero/{parametro}', function ($parametro) {
     if (is_numeric($parametro)) {
         return "Es un numero";
-    }else{
+    } else {
         return "No es un numero";
     }
 });
@@ -70,12 +72,12 @@ Route::get('/numletras/{letras}/{numeros}', function ($letras, $numeros) {
 
 Route::get('/host', function () {
     $direccion = env("DB_HOST");
-    return 'La direccion de la base de datos es ' . $direccion ;
+    return 'La direccion de la base de datos es ' . $direccion;
 });
 
 Route::get('/timezone', function () {
     $zona = config('app.timezone');
-    return "La zona horaria es " . $zona ;
+    return "La zona horaria es " . $zona;
 });
 
 Route::view('/inicio', 'inicio');
