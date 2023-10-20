@@ -19,3 +19,4 @@ jobs:
             cd /var/www/html/reddit
             git pull github master
             npm run build
+            service php8.2-fpm restart
